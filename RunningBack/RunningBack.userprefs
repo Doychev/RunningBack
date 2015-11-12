@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EnemyScript.cs">
+    <Files>
+      <File FileName="Assets\Scripts\EnemyScript.cs" Line="43" Column="1" />
+      <File FileName="Assets\Scripts\PlayerControllerScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Constants.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MenuManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CrowdSoundsScript.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
