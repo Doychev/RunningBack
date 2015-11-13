@@ -12,7 +12,7 @@ public class MenuManager : MonoBehaviour {
 
         Application.targetFrameRate = 60;
         audioSetting = PlayerPrefs.GetInt(Constants.AUDIO_SETTING, 1);
-        audioTxt.text = audioSetting == 0 ? ("Sound Off") : ("Sound On");
+        audioTxt.text = audioSetting == 0 ? ("SOUND OFF") : ("SOUND ON");
         PlayGamesPlatform.Activate();
         //speedTxt.text = Social.localUser.userName.ToString();
         Social.localUser.Authenticate((bool success) => {
@@ -29,8 +29,19 @@ public class MenuManager : MonoBehaviour {
         Social.ShowLeaderboardUI();
     }
 
-    public void goToUpgrades() {
+    public void goToMenu()
+    {
+        Application.LoadLevel("mainMenu");
+    }
+
+    public void goToUpgrades()
+    {
         Application.LoadLevel("upgradeMenu");
+    }
+
+    public void goToPurchases()
+    {
+        Application.LoadLevel("purchasesMenu");
     }
 
     public void goToAbout() {
@@ -42,7 +53,7 @@ public class MenuManager : MonoBehaviour {
         audioSetting++;
         audioSetting %= 2;
         PlayerPrefs.SetInt(Constants.AUDIO_SETTING, audioSetting);
-        audioTxt.text = audioSetting == 0 ? ("Sound Off") : ("Sound On");
+        audioTxt.text = audioSetting == 0 ? ("SOUND OFF") : ("SOUND ON");
     }
 
     public void shareApp()
