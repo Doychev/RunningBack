@@ -19,7 +19,7 @@ public class BoostersSpawningScript : MonoBehaviour {
 
 	public void SpawnBooster() {
 		Vector3 position = new Vector3 ();
-		position.y = 1.5f;
+		position.y = 2.5f;
 		position.x = Random.Range(minCoordinateX, maxCoordinateX);
 		position.z = Random.Range(minCoordinateZ, maxCoordinateZ);
 		Instantiate(boosterPrefab, position, Quaternion.identity);

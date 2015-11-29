@@ -66,6 +66,8 @@
      <Compile Include="Assets\GooglePlayGames\Editor\xcode\Sections.cs" />
      <Compile Include="Assets\GooglePlayGames\Editor\xcode\Serializer.cs" />
      <Compile Include="Assets\GooglePlayGames\Editor\xcode\Utils.cs" />
+     <Compile Include="Assets\Soomla\Editor\SoomlaPostBuild.cs" />
+     <Compile Include="Assets\Soomla\Editor\SoomlaSettingsEditor.cs" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-bn-rBD\common_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-kk-rKZ\common_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-lv\base_strings.xml" />
@@ -220,6 +222,7 @@
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-mn-rMN\base_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-hi\common_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-af\common_strings.xml" />
+     <None Include="Assets\Plugins\WP8\IAPMock.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-nl\base_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-hi\wallet_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-cs\base_strings.xml" />
@@ -272,6 +275,7 @@
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-en-rIN\wallet_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-pt-rPT\common_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-zh-rHK\wallet_strings.xml" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-en-rAU\base_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-sw\wallet_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-ja\common_strings.xml" />
@@ -310,6 +314,9 @@
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-uk\base_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-de\base_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-et-rEE\common_strings.xml" />
+ <Reference Include="UnityEngine.Advertisements">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>
@@ -324,6 +331,15 @@
  </Reference>
  <Reference Include="UnityEditor.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Analytics">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="soomla-wp-core">
+ <HintPath>C:/Users/Martin Doychev/Documents/Projects/RunningBack/RunningBack/Assets/Plugins/soomla-wp-core.dll</HintPath>
+ </Reference>
+ <Reference Include="wp-store">
+ <HintPath>C:/Users/Martin Doychev/Documents/Projects/RunningBack/RunningBack/Assets/Plugins/wp-store.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
@@ -366,6 +382,8 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{C421FC28-E0C4-7B62-A7E5-3E0F0C8AEF48}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{6D47030F-0FCD-E9B6-334D-8EDDAE3FA8E9}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
   </ItemGroup>

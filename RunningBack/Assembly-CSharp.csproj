@@ -218,11 +218,14 @@
      <Compile Include="Assets\GooglePlayGames\Platforms\PlayGamesClientFactory.cs" />
      <Compile Include="Assets\GooglePlayGames\Platforms\TokenClient.cs" />
      <Compile Include="Assets\GooglePlayGames\PluginVersion.cs" />
+     <Compile Include="Assets\Scripts\AchievementsManager.cs" />
+     <Compile Include="Assets\Scripts\AudioControl.cs" />
      <Compile Include="Assets\Scripts\BoosterScript.cs" />
      <Compile Include="Assets\Scripts\BoostersSpawningScript.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\Constants.cs" />
      <Compile Include="Assets\Scripts\CrowdSoundsScript.cs" />
+     <Compile Include="Assets\Scripts\DESEncryption.cs" />
      <Compile Include="Assets\Scripts\EnemyScript.cs" />
      <Compile Include="Assets\Scripts\EnemySpawningScript.cs" />
      <Compile Include="Assets\Scripts\MenuManager.cs" />
@@ -230,6 +233,10 @@
      <Compile Include="Assets\Scripts\MovementType.cs" />
      <Compile Include="Assets\Scripts\PlayerControllerScript.cs" />
      <Compile Include="Assets\Scripts\PurchasesManager.cs" />
+     <Compile Include="Assets\Scripts\RunningBackAssets.cs" />
+     <Compile Include="Assets\Scripts\SecurePlayerPrefs.cs" />
+     <Compile Include="Assets\Scripts\TutorialManager.cs" />
+     <Compile Include="Assets\Scripts\UIAnimationScript.cs" />
      <Compile Include="Assets\Scripts\UpgradeManager.cs" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-bn-rBD\common_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-kk-rKZ\common_strings.xml" />
@@ -385,6 +392,7 @@
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-mn-rMN\base_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-hi\common_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-af\common_strings.xml" />
+     <None Include="Assets\Plugins\WP8\IAPMock.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-nl\base_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-hi\wallet_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-cs\base_strings.xml" />
@@ -437,6 +445,7 @@
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-en-rIN\wallet_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-pt-rPT\common_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-zh-rHK\wallet_strings.xml" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-en-rAU\base_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-sw\wallet_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-ja\common_strings.xml" />
@@ -475,11 +484,23 @@
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-uk\base_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-de\base_strings.xml" />
      <None Include="Assets\Plugins\Android\google-play-services_lib\res\values-et-rEE\common_strings.xml" />
+ <Reference Include="UnityEngine.Advertisements">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Analytics">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="soomla-wp-core">
+ <HintPath>C:/Users/Martin Doychev/Documents/Projects/RunningBack/RunningBack/Assets/Plugins/soomla-wp-core.dll</HintPath>
+ </Reference>
+ <Reference Include="wp-store">
+ <HintPath>C:/Users/Martin Doychev/Documents/Projects/RunningBack/RunningBack/Assets/Plugins/wp-store.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/Mono.Cecil.dll</HintPath>
@@ -487,6 +508,10 @@
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{C421FC28-E0C4-7B62-A7E5-3E0F0C8AEF48}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

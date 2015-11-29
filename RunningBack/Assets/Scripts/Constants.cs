@@ -18,7 +18,12 @@ public static class Constants
 	public const string PLAYER_LUCK = "PLAYER_LUCK";
     public const string TOTAL_TOUCHDOWNS = "TOTAL_TOUCHDOWNS";
     public const string TOTAL_YARDS_GAINED = "TOTAL_YARDS_GAINED";
+    public const string BOOSTS_USED = "BOOSTS_USED";
+    public const string TOTAL_UPGRADES = "TOTAL_UPGRADES";
     public const string AUDIO_SETTING = "AUDIO_SETTING";
+    public const string SECURE_PASS = "RUNNINGBACKSECURITY";
+    public const string HAS_RATED = "HAS_RATED";
+    public const string SHOW_TUTORIAL = "SHOW_TUTORIAL";
 
     //Initial player abilities
     public const int PLAYER_INITIAL_SPEED = 12;

@@ -38,7 +38,6 @@ public class EnemyScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//		GetComponent<Rigidbody>().velocity = velocity;
 		if (player.GetComponent<PlayerControllerScript> ().isPlaying()) {
             if (!pushed)
             {
@@ -58,13 +57,6 @@ public class EnemyScript : MonoBehaviour {
                 velocity = new Vector3(-velocity.x, velocity.y, -velocity.z);
             }
 		}
-		//if (pushed) {
-		//	currentPause++;
-		//	if (currentPause > pauseTime) {
-		//		pushed = false;
-		//		currentPause = 0;
-		//	}
-		//}
 	}
 
 	void setRandomVelocity() {

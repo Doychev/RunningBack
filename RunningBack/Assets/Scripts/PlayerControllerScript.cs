@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using GooglePlayGames;
-using UnityEngine.SocialPlatforms;
 
 public class PlayerControllerScript : MonoBehaviour {
 
@@ -26,54 +24,72 @@ public class PlayerControllerScript : MonoBehaviour {
 	private Vector3 lastPosition;
 
 	private bool movingLeft = false, movingRight = false, movingForward = true, scoring = false;
-	private int boostRemaining = 0, boostStart = 60;
+	private int boostRemaining = 0, boostStart = 180;
 	private int breakTackleRemaining = 0, breakTackleStart = 120;
-	private float boostMultiplier = 1.5f, boostMultiplierStart = 1.5f;
+	private float boostMultiplier = 1.75f, boostMultiplierStart = 1.75f;
 
 	public int boosters, breakTackles;
 
 	public Button boostersBtn, breakTacklesBtn;
 	public GameObject panel;
 
-	private bool playing = true;
+    public GameObject tutorialPanel;
+
+    public GameObject touchdownFlashingTxt;
+
+    private bool playing = true;
 
 	private float y;
 
 	private CrowdSoundsScript reactionsAudio;
 
-    public GameObject audioManager;
+    private int boostsUsed = 0;
 
 	// Use this for initialization
 	void Start () {
+        Time.timeScale = 1;
 
-		movementSpeed = PlayerPrefs.GetInt (Constants.PLAYER_SPEED, Constants.PLAYER_INITIAL_SPEED);
-		horizontalSpeedMax = PlayerPrefs.GetInt (Constants.PLAYER_SIDESPEED, Constants.PLAYER_INITIAL_SIDESPEED);
-		horizontalSpeedIncrement = PlayerPrefs.GetFloat (Constants.PLAYER_AGILITY, Constants.PLAYER_INITIAL_AGILITY);
-		luck = PlayerPrefs.GetFloat (Constants.PLAYER_LUCK, Constants.PLAYER_INITIAL_LUCK);
+        bool showTutorial = SecurePlayerPrefs.GetInt(Constants.SHOW_TUTORIAL, 1, Constants.SECURE_PASS) == 1;
+        if (showTutorial)
+        {
+            pauseGame();
+            tutorialPanel.GetComponent<TutorialManager>().initializeTutorial(true);
+        }
 
-		boosters = PlayerPrefs.GetInt (Constants.AVAILABLE_BOOSTERS, 10);
+        movementSpeed = SecurePlayerPrefs.GetInt (Constants.PLAYER_SPEED, Constants.PLAYER_INITIAL_SPEED, Constants.SECURE_PASS);
+		horizontalSpeedMax = SecurePlayerPrefs.GetInt (Constants.PLAYER_SIDESPEED, Constants.PLAYER_INITIAL_SIDESPEED, Constants.SECURE_PASS);
+		horizontalSpeedIncrement = SecurePlayerPrefs.GetFloat (Constants.PLAYER_AGILITY, Constants.PLAYER_INITIAL_AGILITY, Constants.SECURE_PASS);
+		luck = SecurePlayerPrefs.GetFloat (Constants.PLAYER_LUCK, Constants.PLAYER_INITIAL_LUCK, Constants.SECURE_PASS);
+
+		boosters = SecurePlayerPrefs.GetInt (Constants.AVAILABLE_BOOSTERS, 10, Constants.SECURE_PASS);
 		updateBoostersUi ();
-		breakTackles = PlayerPrefs.GetInt (Constants.AVAILABLE_BREAK_TACKLES, 10);
+		breakTackles = SecurePlayerPrefs.GetInt (Constants.AVAILABLE_BREAK_TACKLES, 10, Constants.SECURE_PASS);
 		updateBreakTacklesUi ();
 
 		lastPosition = transform.position;
 		y = lastPosition.y;
 
+        boostsUsed = SecurePlayerPrefs.GetInt(Constants.BOOSTS_USED, 0, Constants.SECURE_PASS);
+        
 		enemySpawner = FindObjectOfType<EnemySpawningScript> ();
 		boostersSpawner = FindObjectOfType<BoostersSpawningScript> ();
 
-		reactionsAudio = FindObjectOfType<CrowdSoundsScript> ();
+        reactionsAudio = FindObjectOfType<CrowdSoundsScript> ();
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (!scoring) {
-			yardsGained += Mathf.Abs (lastPosition.x - transform.position.x);
-			yardsGainedTxt.text = yardsGained + "";
-		}
-		totalYards += Vector3.Distance (lastPosition, transform.position);
-		totalYardsTxt.text = totalYards + "";
-		lastPosition = transform.position;
+        if (playing)
+        {
+            if (!scoring)
+            {
+                yardsGained += Mathf.Abs(lastPosition.x - transform.position.x);
+                yardsGainedTxt.text = yardsGained + "";
+            }
+            totalYards += Vector3.Distance(lastPosition, transform.position);
+            totalYardsTxt.text = totalYards + "";
+        }
+        lastPosition = transform.position;
 
 		int horizontalDirection = 0, verticalDirection = 1;
 		if (movingLeft) {
@@ -100,26 +116,37 @@ public class PlayerControllerScript : MonoBehaviour {
 		if (breakTackleRemaining > 0) {
 			breakTackleRemaining--;
 		}
-        if (playing) {
+        if (playing && !scoring) {
 			transform.position = new Vector3 (lastPosition.x + verticalSpeed / 60, y, lastPosition.z + (horizontalDirection * currentHorizontalSpeed / 60));
 		}
 	}
 
-	public void gameOver() {
+    public void pauseGame()
+    {
+        playing = false;
+        Time.timeScale = 0;
+    }
+
+    public void unpauseGame()
+    {
+        playing = true;
+        Time.timeScale = 1;
+    }
+
+    public void gameOver() {
 		reactionsAudio.playCheering ();
-        audioManager.GetComponent<AudioSource>().Stop();
-		playing = false;
-		int playerUpgradePoints = PlayerPrefs.GetInt (Constants.PLAYER_UPGRADE_POINTS, 0);
+        //        audioManager.GetComponent<AudioSource>().Stop();
+        playing = false;
+        int playerUpgradePoints = SecurePlayerPrefs.GetInt (Constants.PLAYER_UPGRADE_POINTS, 0, Constants.SECURE_PASS);
 		playerUpgradePoints += touchdowns;
-		PlayerPrefs.SetInt(Constants.PLAYER_UPGRADE_POINTS, playerUpgradePoints);
+		SecurePlayerPrefs.SetInt(Constants.PLAYER_UPGRADE_POINTS, playerUpgradePoints, Constants.SECURE_PASS);
 		boostersBtn.interactable = false;
 		breakTacklesBtn.interactable = false;
         submitLeaderboardScores();
+        SecurePlayerPrefs.SetInt(Constants.BOOSTS_USED, boostsUsed, Constants.SECURE_PASS);
+        AchievementsManager.updateAcheivements(touchdowns, SecurePlayerPrefs.GetInt(Constants.TOTAL_TOUCHDOWNS, 0, Constants.SECURE_PASS), boostsUsed);
 		panel.SetActive(true);
-		Time.timeScale = 0;
-
-		//		restartGame ();
-	}
+   	}
 
     void submitLeaderboardScores() {
         if (Social.localUser.authenticated)
@@ -132,15 +159,15 @@ public class PlayerControllerScript : MonoBehaviour {
                 // handle success or failure
             });
 
-            int savedTouchdowns = PlayerPrefs.GetInt(Constants.TOTAL_TOUCHDOWNS, 0) + touchdowns;
-            PlayerPrefs.SetInt(Constants.TOTAL_TOUCHDOWNS, savedTouchdowns);
+            int savedTouchdowns = SecurePlayerPrefs.GetInt(Constants.TOTAL_TOUCHDOWNS, 0, Constants.SECURE_PASS) + touchdowns;
+            SecurePlayerPrefs.SetInt(Constants.TOTAL_TOUCHDOWNS, savedTouchdowns, Constants.SECURE_PASS);
 
             Social.ReportScore(savedTouchdowns, GPGConstants.leaderboard_total_touchdowns, (bool success) => {
                 // handle success or failure
             });
 
-            int savedYards = PlayerPrefs.GetInt(Constants.TOTAL_YARDS_GAINED, 0) + System.Convert.ToInt32(yardsGained);
-            PlayerPrefs.SetInt(Constants.TOTAL_YARDS_GAINED, savedYards);
+            int savedYards = SecurePlayerPrefs.GetInt(Constants.TOTAL_YARDS_GAINED, 0, Constants.SECURE_PASS) + System.Convert.ToInt32(yardsGained);
+            SecurePlayerPrefs.SetInt(Constants.TOTAL_YARDS_GAINED, savedYards, Constants.SECURE_PASS);
 
             Social.ReportScore(savedYards, GPGConstants.leaderboard_total_yards_gained, (bool success) => {
                 // handle success or failure
@@ -153,29 +180,47 @@ public class PlayerControllerScript : MonoBehaviour {
 		if (col.gameObject.tag.Equals (Constants.ENDZONE) && !scoring) {
 			scoreTouchdown();
 		} else if (col.gameObject.tag.Equals (Constants.SIDELINES)) {
-			gameOver ();
+            flashOutOfBoundsTxt();
+            gameOver();
 		} else if (col.gameObject.tag.Equals (Constants.ENEMY) && breakTackleRemaining == 0) {
+            flashTackledTxt();
             gameOver();
         } else if (col.gameObject.tag.Equals (Constants.BOOSTER)) {
 			increaseBoosters (col.gameObject);
 		} else if (col.gameObject.tag.Equals (Constants.FIELD)) {
-			scoring = false;
+//			scoring = false;
 		}
 	}
 
 	public void scoreTouchdown() {
-		reactionsAudio.playBooing ();
+        flashTouchdownTxt();
+        reactionsAudio.playBooing ();
 		scoring = true;
 		yardsGained += 3.5f; //fix for the less yards counted on each touchdown
 		touchdowns++;
 		touchdownsTxt.text = touchdowns + "";
-		StartCoroutine (changeDirection ());
+		changeDirection ();
 		enemySpawner.SpawnEnemies (touchdowns);
 		if (Random.value < luck) 
 			boostersSpawner.SpawnBooster ();
 	}
-	
-	public void moveLeft(bool mouseDown) {
+
+    void flashTouchdownTxt()
+    {
+        touchdownFlashingTxt.GetComponent<UIAnimationScript>().playAnimation("TOUCHDOWN");
+    }
+
+    void flashOutOfBoundsTxt()
+    {
+        touchdownFlashingTxt.GetComponent<UIAnimationScript>().playAnimation("OUT OF BOUNDS");
+    }
+
+    void flashTackledTxt()
+    {
+        touchdownFlashingTxt.GetComponent<UIAnimationScript>().playAnimation("TACKLED");
+    }
+
+    public void moveLeft(bool mouseDown) {
 		if (movingForward) {
 			movingLeft = mouseDown;
 			movingRight = false;
@@ -195,21 +240,22 @@ public class PlayerControllerScript : MonoBehaviour {
 		}
 	}
 
-	public IEnumerator changeDirection() {
-		yield return new WaitForSeconds (0.2f);
+	public void changeDirection() {
 		transform.Rotate (new Vector3 (0, 1, 0), 180);
 		movingLeft = false;
 		movingRight = false;
 		movingForward = !movingForward;
+        Time.timeScale = 0;
 		Camera.main.GetComponent<CameraController> ().setIsRotating (movingForward);
 	}
 
 	public void enableBreakTackle() {
-		if (breakTackleRemaining == 0) {
+        boostsUsed++;
+        if (breakTackleRemaining == 0) {
 			if (breakTackles > 0) {
 				breakTackles--;
 				updateBreakTacklesUi ();
-				PlayerPrefs.SetInt(Constants.AVAILABLE_BREAK_TACKLES, breakTackles);
+				SecurePlayerPrefs.SetInt(Constants.AVAILABLE_BREAK_TACKLES, breakTackles, Constants.SECURE_PASS);
 				breakTackleRemaining = breakTackleStart;
 			} else {
 				//show no break tackles message
@@ -218,11 +264,12 @@ public class PlayerControllerScript : MonoBehaviour {
 	}
 
 	public void enableBoost() {
-		if (boostRemaining == 0) {
+        boostsUsed++;
+        if (boostRemaining == 0) {
 			if (boosters > 0) {
 				boosters--;
 				updateBoostersUi ();
-				PlayerPrefs.SetInt(Constants.AVAILABLE_BOOSTERS, boosters);
+				SecurePlayerPrefs.SetInt(Constants.AVAILABLE_BOOSTERS, boosters, Constants.SECURE_PASS);
 				boostMultiplier = boostMultiplierStart;
 				boostRemaining = boostStart;
 			} else {
@@ -235,11 +282,11 @@ public class PlayerControllerScript : MonoBehaviour {
 		if (Random.value > 0.5f) {
 			boosters++;
 			updateBoostersUi ();
-			PlayerPrefs.SetInt (Constants.AVAILABLE_BOOSTERS, boosters);
+			SecurePlayerPrefs.SetInt (Constants.AVAILABLE_BOOSTERS, boosters, Constants.SECURE_PASS);
 		} else {
 			breakTackles++;
 			updateBreakTacklesUi ();
-			PlayerPrefs.SetInt (Constants.AVAILABLE_BREAK_TACKLES, breakTackles);
+			SecurePlayerPrefs.SetInt (Constants.AVAILABLE_BREAK_TACKLES, breakTackles, Constants.SECURE_PASS);
 		}
 		Destroy (gameObject);
 	}
@@ -264,11 +311,21 @@ public class PlayerControllerScript : MonoBehaviour {
 		Application.LoadLevel ("mainMenu");
 	}
 
-public void setScoring(bool scoring) {
+    public void goToUpgrades()
+    {
+        Application.LoadLevel("upgradeMenu");
+    }
+
+    public void goToPurchases()
+    {
+        Application.LoadLevel("purchasesMenu");
+    }
+
+    public void setScoring(bool scoring) {
 		this.scoring = scoring;
 	}
 
 	public bool isPlaying() {
-		return playing;
+		return playing && !scoring;
 	}
 }
